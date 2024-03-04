@@ -1,13 +1,11 @@
 import pygame
 from piece import *
-# Inicializa Pygame
+
 pygame.init()
 
-# Estado de movimiento y pieza seleccionada
 moving = False
 selected_piece = None
 
-# Bucle principal del juego
 running = True
 while running:
     for event in pygame.event.get():
@@ -25,23 +23,20 @@ while running:
             selected_piece = None
         elif event.type == pygame.MOUSEMOTION and moving:
             new_x, new_y = pygame.mouse.get_pos()
+            # Ajusta las coordenadas del ratón a la cuadrícula más cercana
+            new_x, new_y = snap_to_grid(new_x, new_y)
             selected_piece.rect.x = new_x - selected_piece.rect.width // 2
             selected_piece.rect.y = new_y - selected_piece.rect.height // 2
 
-    # Limpia la pantalla
     screen.fill((255, 255, 255))
 
-    # Dibuja las casillas del tablero
     for row in range(8):
         for col in range(8):
             color = WHITE if (row + col) % 2 == 0 else BLACK
             pygame.draw.rect(screen, color, (col * 80, row * 80, 80, 80))
 
-    # Dibuja las piezas
     for piece in pieces:
         piece.draw(screen)
 
-    # Actualiza la pantalla
     pygame.display.update()
-# Sal del programa
 pygame.quit()

@@ -30,6 +30,22 @@ class Piece:
 
 ##########################################################################################################
 
+def snap_to_grid(x, y):
+    """
+    Redondea las coordenadas x e y al entero más cercano para ajustar a la cuadrícula.
+    Además, ajusta las coordenadas para que las piezas se coloquen en el centro de las cuadrículas.
+    """
+    grid_size = 80 # Tamaño de la cuadrícula
+    # Ajusta las coordenadas para que las piezas se coloquen en el centro de las cuadrículas
+    return round(x / grid_size) * grid_size + grid_size // 2, round(y / grid_size) * grid_size + grid_size // 2
+
+def is_grid_occupied(x, y, selected_piece):
+    for piece in pieces:
+        if piece != selected_piece and piece.rect.x // 80 == x and piece.rect.y // 80 == y:
+            return True
+    return False
+
+
 # Configuración de la ventana
 WIDTH, HEIGHT = 640, 640
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
