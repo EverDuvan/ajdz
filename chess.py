@@ -5,6 +5,7 @@ pygame.init()
 
 moving = False
 selected_piece = None
+current_turn = 'White'
 
 running = True
 while running:
@@ -23,10 +24,19 @@ while running:
             selected_piece = None
         elif event.type == pygame.MOUSEMOTION and moving:
             new_x, new_y = pygame.mouse.get_pos()
-            # Ajusta las coordenadas del ratón a la cuadrícula más cercana
-            new_x, new_y = snap_to_grid(new_x, new_y)
-            selected_piece.rect.x = new_x - selected_piece.rect.width // 2
-            selected_piece.rect.y = new_y - selected_piece.rect.height // 2
+            #new_x, new_y = snap_to_grid(new_x, new_y)
+            # Verifica si el movimiento es válido para la pieza seleccionada
+            if selected_piece.is_valid_move(new_x // 80, new_y // 80):
+                if current_turn == selected_piece.color:
+                    print (f'pieza: {selected_piece.color}, turno: {current_turn}')
+                    selected_piece.move(new_x // 80, new_y // 80)
+                    current_turn = 'Black'
+                elif selected_piece.is_valid_move(new_x // 80, new_y // 80) and current_turn == selected_piece.color:
+                    print (f'pieza: {selected_piece.color}, turno: {current_turn}')
+                    selected_piece.move(new_x // 80, new_y // 80)
+                    current_turn = 'White'
+            #else:
+                #print('Invalid move')
 
     screen.fill((255, 255, 255))
 

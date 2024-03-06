@@ -23,28 +23,26 @@ class Piece:
     def draw(self, screen):
         # Dibuja la imagen en la pantalla utilizando el atributo rect
         screen.blit(self.image, self.rect)
-    
+
     def is_valid_move(self, new_x, new_y):
-        # Comprueba si el movimiento es diagonal y dentro del tablero
-        return (abs(self.x - new_x) == abs(self.y - new_y)) and (0 <= new_x <= 7) and (0 <= new_y <= 7)
-
-##########################################################################################################
-
-def snap_to_grid(x, y):
-    """
-    Redondea las coordenadas x e y al entero más cercano para ajustar a la cuadrícula.
-    Además, ajusta las coordenadas para que las piezas se coloquen en el centro de las cuadrículas.
-    """
-    grid_size = 80 # Tamaño de la cuadrícula
-    # Ajusta las coordenadas para que las piezas se coloquen en el centro de las cuadrículas
-    return round(x / grid_size) * grid_size + grid_size // 2, round(y / grid_size) * grid_size + grid_size // 2
-
-def is_grid_occupied(x, y, selected_piece):
-    for piece in pieces:
-        if piece != selected_piece and piece.rect.x // 80 == x and piece.rect.y // 80 == y:
-            return True
-    return False
-
+            if self.name == 'Knight':
+                knight_moves = [(1, 2), (2, 1), (-1, 2), (2, -1), (-1, -2), (-2, -1), (1, -2), (-2, 1)]
+                return (new_x - self.x, new_y - self.y) in knight_moves and (0 <= new_x <= 7) and (0 <= new_y <= 7)
+            elif self.name == 'Rook':
+                rook_moves = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+                return (new_x - self.x, new_y - self.y) in rook_moves and (0 <= new_x <= 7) and (0 <= new_y <= 7)
+            elif self.name == 'Bishop':
+                 bishop_moves = [(1, 1), (-1, 1), (1, -1), (-1, -1)]
+                 return (new_x - self.x, new_y - self.y) in bishop_moves and (0 <= new_x <= 7) and (0 <= new_y <= 7)
+            elif self.name == 'Queen':
+                queen_moves = [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
+                return (new_x - self.x, new_y - self.y) in queen_moves and (0 <= new_x <= 7) and (0 <= new_y <= 7)
+            elif self.name == 'King':
+                 kinng_moves = [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
+                 return (new_x - self.x, new_y - self.y) in kinng_moves and (0 <= new_x <= 7) and (0 <= new_y <= 7)
+            elif self.name == 'Pawn':
+                 pawn_moves = [(0, 1)]
+                 return (new_x - self.x, new_y - self.y) in pawn_moves and (0 <= new_x <= 7) and (0 <= new_y <= 7)
 
 # Configuración de la ventana
 WIDTH, HEIGHT = 640, 640
