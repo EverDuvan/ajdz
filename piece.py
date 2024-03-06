@@ -20,16 +20,17 @@ class Piece:
         self.rect.x = new_x * 80
         self.rect.y = new_y * 80
 
-    def draw(self, screen):
+    @property
+    def draw(self):
         # Dibuja la imagen en la pantalla utilizando el atributo rect
-        screen.blit(self.image, self.rect)
+        return screen.blit(self.image, self.rect)
 
     def is_valid_move(self, new_x, new_y):
             if self.name == 'Knight':
                 knight_moves = [(1, 2), (2, 1), (-1, 2), (2, -1), (-1, -2), (-2, -1), (1, -2), (-2, 1)]
                 return (new_x - self.x, new_y - self.y) in knight_moves and (0 <= new_x <= 7) and (0 <= new_y <= 7)
             elif self.name == 'Rook':
-                rook_moves = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+                rook_moves = [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
                 return (new_x - self.x, new_y - self.y) in rook_moves and (0 <= new_x <= 7) and (0 <= new_y <= 7)
             elif self.name == 'Bishop':
                  bishop_moves = [(1, 1), (-1, 1), (1, -1), (-1, -1)]

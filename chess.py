@@ -24,29 +24,27 @@ while running:
             selected_piece = None
         elif event.type == pygame.MOUSEMOTION and moving:
             new_x, new_y = pygame.mouse.get_pos()
-            #new_x, new_y = snap_to_grid(new_x, new_y)
             # Verifica si el movimiento es válido para la pieza seleccionada
-            if selected_piece.is_valid_move(new_x // 80, new_y // 80):
-                if current_turn == selected_piece.color:
-                    print (f'pieza: {selected_piece.color}, turno: {current_turn}')
+            if selected_piece.is_valid_move(new_x // 80, new_y // 80) and current_turn == selected_piece.color:
+                destination_piece = None
+                for piece in pieces:
+                    if piece.rect.collidepoint(new_x, new_y):
+                        destination_piece = piece
+                        break
+                
+                if destination_piece is None or destination_piece.color != selected_piece.color:
+                    if destination_piece is not None:
+                        pieces.remove(destination_piece)  # Elimina la pieza del oponente
                     selected_piece.move(new_x // 80, new_y // 80)
-                    current_turn = 'Black'
-                elif selected_piece.is_valid_move(new_x // 80, new_y // 80) and current_turn == selected_piece.color:
-                    print (f'pieza: {selected_piece.color}, turno: {current_turn}')
-                    selected_piece.move(new_x // 80, new_y // 80)
-                    current_turn = 'White'
-            #else:
-                #print('Invalid move')
+                    current_turn = 'Black' if current_turn == 'White' else 'White'
 
     screen.fill((255, 255, 255))
-
     for row in range(8):
         for col in range(8):
             color = WHITE if (row + col) % 2 == 0 else BLACK
             pygame.draw.rect(screen, color, (col * 80, row * 80, 80, 80))
-
     for piece in pieces:
-        piece.draw(screen)
+        piece.draw
 
     pygame.display.update()
 pygame.quit()
