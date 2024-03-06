@@ -1,48 +1,29 @@
-import pygame
-from piece import *
+class Piece:
+    # Otras partes del código...
 
-pygame.init()
+    def is_valid_move(self, new_x, new_y):
+        if self.name == 'Knight':
+            # Lógica para el caballo...
+        elif self.name == 'Rook':
+            # Movimiento horizontal o vertical hasta colisionar o capturar
+            if (new_x == self.x or new_y == self.y) and not self._is_obstructed(new_x, new_y):
+                return True
+        elif self.name == 'Bishop':
+            # Movimiento diagonal hasta colisionar o capturar
+            if abs(new_x - self.x) == abs(new_y - self.y) and not self._is_obstructed(new_x, new_y):
+                return True
+        elif self.name == 'Queen':
+            # Movimiento horizontal, vertical o diagonal hasta colisionar o capturar
+            if ((new_x == self.x or new_y == self.y) or (abs(new_x - self.x) == abs(new_y - self.y))) \
+                    and not self._is_obstructed(new_x, new_y):
+                return True
+        elif self.name == 'King':
+            # Movimiento a una casilla adyacente hasta colisionar o capturar
+            if abs(new_x - self.x) <= 1 and abs(new_y - self.y) <= 1:
+                return True
+        elif self.name == 'Pawn':
+            # Lógica para el peón...
 
-moving = False
-selected_piece = None
-current_turn = 'White'
-
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_x, mouse_y = pygame.mouse.get_pos()
-            for piece in pieces:
-                if piece.rect.collidepoint(mouse_x, mouse_y):
-                    moving = True
-                    selected_piece = piece
-                    break
-        elif event.type == pygame.MOUSEBUTTONUP:
-            moving = False
-            selected_piece = None
-        elif event.type == pygame.MOUSEMOTION and moving:
-            new_x, new_y = pygame.mouse.get_pos()
-            # Verifica si el movimiento es válido para la pieza seleccionada
-            if selected_piece.is_valid_move(new_x // 80, new_y // 80) and current_turn == selected_piece.color:
-                for piece in pieces:
-                    if piece.rect.collidepoint(new_x, new_y):
-                        if piece.color != current_turn:
-                            pieces.remove(piece)
-                            break
-                        else:
-                            break
-                selected_piece.move(new_x // 80, new_y // 80)
-                current_turn = 'Black' if current_turn == 'White' else 'White'
-
-    screen.fill((255, 255, 255))
-    for row in range(8):
-        for col in range(8):
-            color = WHITE if (row + col) % 2 == 0 else BLACK
-            pygame.draw.rect(screen, color, (col * 80, row * 80, 80, 80))
-    for piece in pieces:
-        piece.draw
-
-    pygame.display.update()
-pygame.quit()
+    def _is_obstructed(self, new_x, new_y):
+        # Verifica si hay piezas en el camino del movimiento
+        # Implementa lógica para detectar obstrucciones (otras piezas)

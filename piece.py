@@ -42,8 +42,26 @@ class Piece:
                  kinng_moves = [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (-1, 1), (1, -1), (-1, -1)]
                  return (new_x - self.x, new_y - self.y) in kinng_moves and (0 <= new_x <= 7) and (0 <= new_y <= 7)
             elif self.name == 'Pawn':
-                 pawn_moves = [(0, 1)]
-                 return (new_x - self.x, new_y - self.y) in pawn_moves and (0 <= new_x <= 7) and (0 <= new_y <= 7)
+                if self.color == 'White':
+                    # Movimiento especial del peón blanco en su primer movimiento (dos casillas hacia arriba)
+                    if self.y == 6 and new_y == 4 and new_x == self.x:
+                        return True
+                    # Movimiento normal del peón blanco (una casilla hacia arriba)
+                    elif new_y == self.y - 1 and new_x == self.x:
+                        return True
+                    # Captura en diagonal hacia la izquierda
+                    elif new_y == self.y - 1 and (new_x == self.x - 1 or new_x == self.x + 1):
+                        return True
+                elif self.color == 'Black':
+                    # Movimiento especial del peón negro en su primer movimiento (dos casillas hacia abajo)
+                    if self.y == 1 and new_y == 3 and new_x == self.x:
+                        return True
+                    # Movimiento normal del peón negro (una casilla hacia abajo)
+                    elif new_y == self.y + 1 and new_x == self.x:
+                        return True
+                    # Captura en diagonal hacia la derecha
+                    elif new_y == self.y + 1 and (new_x == self.x - 1 or new_x == self.x + 1):
+                        return True
 
 # Configuración de la ventana
 WIDTH, HEIGHT = 640, 640
